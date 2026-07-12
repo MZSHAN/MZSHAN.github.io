@@ -1,0 +1,90 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'blog'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, summary, date, tags } = entry.data;
+
+const fmt = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<Base title={title} description={summary}>
+  <article class="section">
+    <div class="wrap">
+      <a class="back mono" href="/blog/">← blog</a>
+
+      <header class="head">
+        <time class="mono head__date" datetime={date.toISOString()}>{fmt}</time>
+        <h1>{title}</h1>
+        <p class="lede">{summary}</p>
+        {
+          tags.length > 0 && (
+            <div class="tags head__tags">
+              {tags.map((t) => (
+                <span class="tag">{t}</span>
+              ))}
+            </div>
+          )
+        }
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .back {
+    display: inline-block;
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+    text-decoration: none;
+    margin-bottom: 2rem;
+  }
+
+  .back:hover {
+    color: var(--accent);
+  }
+
+  .head {
+    max-width: 68ch;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .head__date {
+    display: block;
+    font-size: 0.74rem;
+    color: var(--ink-faint);
+    margin-bottom: 1rem;
+  }
+
+  .head h1 {
+    margin-bottom: 0.7rem;
+  }
+
+  .head__tags {
+    margin-top: 1.1rem;
+  }
+</style>

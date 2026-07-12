@@ -1,29 +1,33 @@
-# Vim
-*~
-*.sw[p_]
+# ---------------------------------------------------------------
+# PRIVACY. READ BEFORE EDITING.
+#
+# This repo is PUBLIC. Anything committed here is world-readable
+# on GitHub, even if it is never rendered onto the site.
+#
+# The entire tracker/ directory stays local. Not just its data:
+# its source lists the plan out loud, and source in a public repo
+# is public. Do not commit it.
+# ---------------------------------------------------------------
+tracker/
+*.local.json
 
-# Sublime Text
-*.sublime-project
-*.sublime-workspace
+# Build output
+dist/
+.astro/
 
-# Ruby Gem
-*.gem
-.bundle
-Gemfile.lock
-**/vendor/bundle
-
-# Node.js and NPM
-node_modules
+# Dependencies
+node_modules/
 npm-debug.log*
-package-lock.json
-codekit-config.json
+
+# Env
+.env
+.env.*
 
 # macOS
 .DS_Store
 
-# Jekyll generated files
-.jekyll-cache
-.jekyll-metadata
-.sass-cache
-_asset_bundler_cache
-_site
+# Editors
+*~
+*.sw[p_]
+.idea/
+.vscode/
